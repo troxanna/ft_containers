@@ -32,6 +32,24 @@ namespace ft
 
 	};
 
+	template <class T, class Container>
+	bool operator== (const stack<T,Container>& l, const stack<T,Container>& r);
+
+	template <class T, class Container>
+	bool operator!= (const stack<T,Container>& l, const stack<T,Container>& r);
+
+	template <class T, class Container>
+	bool operator<  (const stack<T,Container>& l, const stack<T,Container>& r);
+
+	template <class T, class Container>
+	bool operator<= (const stack<T,Container>& l, const stack<T,Container>& r);
+
+	template <class T, class Container>
+	bool operator>  (const stack<T,Container>& l, const stack<T,Container>& r);
+
+	template <class T, class Container>
+	bool operator>= (const stack<T,Container>& l, const stack<T,Container>& r);
+
 }
 
 #include "Stack.inl"
