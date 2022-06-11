@@ -11,9 +11,9 @@ namespace ft
 	template <class T, class Container = std::vector<T> > class stack
 	{
 		public:		
-		//typedef T	value_type;
+		typedef T	value_type;
 		typedef Container	container_type;
-		//typedef size_t	size_type;
+		typedef size_t	size_type;
 
 		private:
 		container_type _container;
