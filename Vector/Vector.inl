@@ -25,6 +25,12 @@ ft::vector<class T, class Allocator>::vector (const vector& other) : _arr(nullpt
 }
 
 template <class T, class Allocator>
+ft::vector<class T, class Allocator>& ft::vector<class T, class Allocator>::operator=(const vector& other)
+{
+	// добавить обработку кейса если не удалось скопировать 
+}
+
+template <class T, class Allocator>
 void ft::vector<class T, class Allocator>::reserve (size_type n)
 {
 	if (n < _capacity) return;
@@ -90,4 +96,68 @@ template <class T, class Allocator>
 ft::vector<class T, class Allocator>::const_reference ft::vector<class T, class Allocator>::operator[] (size_type n) const
 {
 	return _arr[n];
+}
+
+template <class T, class Allocator>
+ft::vector<class T, class Allocator>::reference ft::vector<class T, class Allocator>::at (size_type n)
+{
+	if (n >= _size)
+		throw std::out_of_range("Invalid size")
+	return _arr[n];
+}
+
+template <class T, class Allocator>
+ft::vector<class T, class Allocator>::const_reference ft::vector<class T, class Allocator>::at (size_type n) const
+{
+	if (n >= _size)
+		throw std::out_of_range("Invalid size")
+	return _arr[n];
+}
+
+template <class T, class Allocator>
+void ft::vector<class T, class Allocator>::push_back (const value_type& val)
+{
+	if (_size < _capacity)
+		reserve(_size * 2);
+	_arr[_size] = _allocator.construct(_arr + _size, val);
+	_size++;
+}
+
+template <class T, class Allocator>
+void ft::vector<class T, class Allocator>::pop_back()
+{
+	_size--;
+	_allocator.destroy(_arr + _size);
+}
+
+
+template <class T, class Allocator>
+void ft::vector<class T, class Allocator>::assign (size_type n, const value_type& val)
+{
+	for (size_type i = 0; i < _size; i++)
+		_allocator.destroy(_arr + i);
+	if (_capacity <= n)
+	{
+		_allocator.deallocate(_arr, _capacity);
+		_arr = _allocator.allocate(n);
+		//
+		_capacity = n;
+	}
+	for (size_type i = 0; i < n; i++)
+		_arr[i] = _allocator.construct(_arr + i, val);
+	_size = n;
+}
+
+template <class T, class Allocator>
+void ft::vector<class T, class Allocator>::swap (vector& x)
+{
+
+}
+
+template <class T, class Allocator>
+void ft::vector<class T, class Allocator>::clear ()
+{
+	for (size_type i = 0; i < _size; i++)
+		_allocator.destroy(_arr + i);
+	_size = 0;
 }

@@ -29,6 +29,7 @@ namespace ft
 		explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
 		vector (const vector& x);
+		vector& operator=(const vector& other);
 
 		//Capacity 
 		void reserve (size_type n);
@@ -41,6 +42,16 @@ namespace ft
 		// Element access
 		reference operator[] (size_type n);
 		const_reference operator[] (size_type n) const;
+		reference at (size_type n);
+		const_reference at (size_type n) const;
+
+		//Modifiers
+		void push_back (const value_type& val);
+		void pop_back();
+		void assign (size_type n, const value_type& val);
+		void swap (vector& x);
+		void clear();
+
 	};
 }
 
