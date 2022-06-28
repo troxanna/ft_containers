@@ -3,9 +3,12 @@
 #include <iostream>
 # include <vector>
 # include <memory>
+# include "../utils/Iterator.hpp"
 
 namespace ft
 {
+	// typedef vector<class T, class Allocator>		vector_class;
+
 	template < class T, class Alloc = std::allocator<T> > class vector
 	{
 		public:
@@ -17,6 +20,12 @@ namespace ft
 		typedef const value_type&						const_reference;
 		typedef T*										pointer;
 		typedef const T*								const_pointer;
+
+		typedef ft::VectorIterator<T>					iterator;
+		typedef ft::VectorIterator<const T>				const_iterator;
+		//typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		//typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		
 
 		private:
 		value_type* _arr;
@@ -51,6 +60,23 @@ namespace ft
 		void assign (size_type n, const value_type& val);
 		void swap (vector& x);
 		void clear();
+
+		//Iterators
+		iterator	begin();
+		iterator	end();
+		//const_iterator 				begin() const;
+		//const_iterator				end() const;
+		iterator erase (iterator position);
+		iterator erase (iterator first, iterator last);
+		//enable_if
+		template <class InputIterator>
+  		void assign (InputIterator first, InputIterator last);
+		template <class InputIterator>
+    	void insert (iterator position, InputIterator first, InputIterator last);
+
+		//other
+		void insert (iterator position, size_type n, const value_type& val);
+		iterator insert (iterator position, const value_type& val);
 
 	};
 }
