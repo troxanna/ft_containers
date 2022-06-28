@@ -53,6 +53,10 @@ namespace ft
 		const_reference operator[] (size_type n) const;
 		reference at (size_type n);
 		const_reference at (size_type n) const;
+		reference front();
+		const_reference front() const;
+		reference back();
+		const_reference back() const;
 
 		//Modifiers
 		void push_back (const value_type& val);

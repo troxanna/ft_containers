@@ -116,6 +116,26 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
+	typename vector<T,  Allocator>::reference vector<T,  Allocator>::front(){
+		return this->_arr[0];
+	}
+
+	template <class T, class Allocator>
+	typename vector<T,  Allocator>::const_reference vector<T,  Allocator>::front() const{
+		return this->_arr[0];
+	}
+
+	template <class T, class Allocator>
+	typename vector<T,  Allocator>::reference vector<T,  Allocator>::back(){
+		return this->_arr[this->_size - 1];
+	}
+
+	template <class T, class Allocator>
+	typename vector<T,  Allocator>::const_reference vector<T,  Allocator>::back() const{
+		return this->_arr[this->_size - 1];
+	}
+
+	template <class T, class Allocator>
 	void vector<T,  Allocator>::push_back (const value_type& val)
 	{
 		if (_size + 1 > _capacity)
