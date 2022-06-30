@@ -10,8 +10,9 @@ namespace ft{
 	template <class T>
 	VectorIterator<T>::~VectorIterator() {};
 
-	template <class T>
-	VectorIterator<T>::VectorIterator(const VectorIterator<T> & other) : _pointer(other._pointer) {};
+	//template <class T>
+	// template <class U>
+	// VectorIterator<T>::VectorIterator(const VectorIterator<U> & other) : _pointer(other._pointer) {};
 
 	template <class T>
 	VectorIterator<T> & VectorIterator<T>::operator=(const VectorIterator& other)  {
@@ -73,7 +74,7 @@ namespace ft{
 
 	template <class T>
 	bool	VectorIterator<T>::operator>(const VectorIterator& other) const {
-		return *this < other;
+		return other < *this;
 	}
 
 	template <class T>

@@ -68,8 +68,8 @@ namespace ft
 		//Iterators
 		iterator	begin();
 		iterator	end();
-		//const_iterator 				begin() const;
-		//const_iterator				end() const;
+		const_iterator 				begin() const;
+		const_iterator				end() const;
 		iterator erase (iterator position);
 		iterator erase (iterator first, iterator last);
 		//enable_if
@@ -79,10 +79,32 @@ namespace ft
     	void insert (iterator position, InputIterator first, InputIterator last);
 
 		//other
-		void insert (iterator position, size_type n, const value_type& val);
 		iterator insert (iterator position, const value_type& val);
+		void insert (iterator position, size_type n, const value_type& val);
+		allocator_type get_allocator() const;
 
 	};
+
+	template <class T, class Alloc>
+  	bool operator== (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	template <class T, class Alloc>
+  	bool operator!= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	template <class T, class Alloc>
+  	bool operator<  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	template <class T, class Alloc>
+  	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	
+	template <class T, class Alloc>
+  	bool operator>  (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+	
+	template <class T, class Alloc>
+  	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs);
+
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y);
 }
 
 #include "Vector.inl"

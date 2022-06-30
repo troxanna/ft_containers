@@ -205,20 +205,20 @@ namespace ft {
 		return iterator(_arr);
 	}
 
-	// template <class T, class Allocator>
-	// typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::begin() const {
-	// 	return const_iterator(_arr);
-	// }
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::begin() const {
+		return const_iterator(_arr);
+	}
 
 	template <class T, class Allocator>
 	typename vector<T, Allocator>::iterator	vector<T, Allocator>::end() {
 		return iterator(_arr + _size);
 	}
 
-	// template <class T, class Allocator>
-	// typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::end() const {
-	// 	return const_iterator(_arr + _size);
-	// }
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::const_iterator	vector<T, Allocator>::end() const {
+		return const_iterator(_arr + _size);
+	}
 
 	template <class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase (iterator position){
@@ -258,22 +258,88 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
-	void vector<T, Allocator>::insert (iterator position, size_type n, const value_type& val){
-		//вызвать в цикле уже реализованный insert
+	typename vector<T, Allocator>::iterator vector<T, Allocator>::insert (iterator position, const value_type& val){	
+
+		if (this->_size + 1 > this->_capacity)
+		{
+			difference_type offset = iterator(this->_arr + this->_size) - position;
+			!this->_capacity ? this->reserve(1) : this->reserve(this->_capacity * 2);
+			position = this->_arr + this->_size - offset;
+		}
+		std::cout << this->_capacity << std::endl;
+		for (iterator it = this->end(); it != position; it--)
+		{
+			this->_allocator.construct(((&(*(it)))), *(it - 1));
+			this->_allocator.destroy((&(*(it - 1))));
+		}
+		this->_allocator.construct(((&(*position))), val);
+		this->_size++;
+		return (position);
 	}
 
 	template <class T, class Allocator>
-	typename vector<T, Allocator>::iterator vector<T, Allocator>::insert (iterator position, const value_type& val){
-		iterator tmp = position;
+	void  vector<T, Allocator>::insert (iterator position, size_type n, const value_type& val)
+	{
+		while (n--)
+			position = this->insert(position, val);
+	}
 
-		//выделить память, если _capacity == 0 || _capacity < _size + 1
-		for (iterator it = this->end(); it > this->begin(); it--)
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::allocator_type vector<T, Allocator>::get_allocator() const{
+		return this->_allocator;
+	}
+
+	//non-members overload
+
+	template <class T, class Alloc>
+  	bool operator==(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		if (lhs.size() != rhs.size())
+			return false;
+		for (size_t i = 0; i < lhs.size(); i++)
 		{
-			this->_allocator.construct(((&(*it)) + 1), *(it));
-			this->_allocator.destroy((&(*it)));
+			if (lhs[i] != rhs[i])
+				return false;
 		}
-		this->_allocator.construct(((&(*tmp))), val);
-		return (tmp);
+		return true;
+	}
+
+	template <class T, class Alloc>
+  	bool operator!=(const vector<T,Alloc>& lhs, const vector<T,Alloc>& rhs){
+		return !(lhs == rhs);
+	}
+
+	template <class T, class Alloc>
+	bool operator< (const vector<T,Alloc>& lhs, const vector<T,Alloc> &rhs) {
+		size_t count = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
+		for (size_t i = 0; i < count; i++)
+		{
+			if (lhs[i] != rhs[i])
+			{
+				return lhs[i] < rhs[i] ? true : false;
+				std::cout << "check";
+			}
+		}
+		return (lhs.size() >= rhs.size()) ? false : true;
+	};
+
+	template <class T, class Alloc>
+	bool operator> (const vector<T,Alloc>& lhs, const vector<T,Alloc> &rhs) {
+		return rhs < lhs;
+	};
+
+	template <class T, class Alloc>
+	bool operator<= (const vector<T,Alloc>& lhs, const vector<T,Alloc> &rhs) {
+		return !(rhs < lhs);
+	};
+
+	template <class T, class Alloc>
+	bool operator>= (const vector<T,Alloc>& lhs, const vector<T,Alloc> &rhs) {
+		return !(lhs < rhs);
+	};
+
+	template <class T, class Alloc>
+	void swap(vector<T,Alloc>& x, vector<T,Alloc>& y){
+		x.swap(y);
 	}
 }
 

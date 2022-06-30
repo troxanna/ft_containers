@@ -61,7 +61,9 @@ namespace ft
 		VectorIterator( void );
 		VectorIterator( T* ptr );
 		~VectorIterator();
-		VectorIterator(const VectorIterator<T> & other);
+		//сделать через enable if
+		template <class U>
+		VectorIterator(const VectorIterator<U>& other)  : _pointer(other._pointer) {};
 		VectorIterator & operator=(const VectorIterator& other);
 
 		reference			operator*() const;
