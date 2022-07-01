@@ -39,6 +39,7 @@ namespace ft
                  const allocator_type& alloc = allocator_type());
 		vector (const vector& x);
 		vector& operator=(const vector& other);
+		~vector();
 
 		//Capacity 
 		void reserve (size_type n);
@@ -46,6 +47,7 @@ namespace ft
 		size_type size() const;
 		size_type capacity() const;
 		bool empty() const;
+		void clear();
 		size_type max_size() const;
 
 		// Element access
@@ -63,7 +65,6 @@ namespace ft
 		void pop_back();
 		void assign (size_type n, const value_type& val);
 		void swap (vector& x);
-		void clear();
 
 		//Iterators
 		iterator	begin();

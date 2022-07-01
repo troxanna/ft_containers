@@ -26,6 +26,16 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
+	vector<T,  Allocator>::~vector(){
+		for (size_type i = 0; i < _size; i++)
+			_allocator.destroy(_arr + i);
+		_allocator.deallocate(_arr, _capacity);
+		_arr = nullptr;
+		_capacity = 0;
+		_size = 0;
+	}
+
+	template <class T, class Allocator>
 	vector<T,  Allocator>& vector<T,  Allocator>::operator=(const vector& other)
 	{
 		// добавить обработку кейса если не удалось скопировать 

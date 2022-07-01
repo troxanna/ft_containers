@@ -12,11 +12,11 @@ int main ()
   //assign - должны ли мы очищать память и заново выделять или нет?
 
   ft::vector<int> arr(0);
+  const ft::vector<int> arr_const(0);
   ft::vector<const int> const_arr(0);
   //arr.reserve(8);
   
 
-  std::cout << arr.capacity() << std::endl;
   std::cout << arr.size() << std::endl;
 
   for (size_t i = 0; i < 4; i++)
@@ -30,6 +30,7 @@ int main ()
   std::cout << arr.size() << std::endl;
 
   ft::VectorIterator<int> it1 = arr.begin();
+  
 
   ft::VectorIterator<int> it2 = arr.end();
 
@@ -125,6 +126,7 @@ int main ()
 
 
   std::vector<int>::iterator c_it = arr2.begin();
+  
   std::vector<int>::const_iterator v_it = c_it;
   
   return 0;
