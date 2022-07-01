@@ -110,7 +110,15 @@ namespace ft
 			reference			operator*() const;
 			pointer				operator->() const;
 			reverse_iterator	operator+(difference_type n) const;
-
+			reverse_iterator &  operator++();
+			reverse_iterator	operator++(int);
+			reverse_iterator & 	operator+=(difference_type n);
+			reverse_iterator 	operator-(difference_type n) const;
+			reverse_iterator & 	operator--();
+			reverse_iterator	operator--(int);
+			reverse_iterator &	operator-=(difference_type n);
+			//доделать []
+			reverse_iterator	operator[](difference_type n) const;
 			
 	};
 
