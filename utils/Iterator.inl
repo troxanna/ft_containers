@@ -1,6 +1,8 @@
 #include "Iterator.hpp"
 
 namespace ft{
+	//VectorIterator
+
 	template <class T>
 	VectorIterator<T>::VectorIterator( void ) : _pointer(nullptr) {};
 
@@ -119,5 +121,9 @@ namespace ft{
 	typename VectorIterator<T>::difference_type	VectorIterator<T>::operator-(const VectorIterator<T> & other){
 		return operator->() - other.operator->();
 	}
+
+
+
+
 
 }

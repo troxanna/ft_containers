@@ -1,10 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
+#include "../Vector/Vector.hpp"
 # include <memory>
 
-//разобарться с typedef
 
 namespace ft
 {

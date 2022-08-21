@@ -1,9 +1,11 @@
 #pragma once
 
 #include <iostream>
-# include <vector>
+//# include <vector>
 # include <memory>
 # include "../utils/Iterator.hpp"
+// # include "../utils/ReverseIterator.hpp"
+# include "../utils/utils.hpp"
 
 namespace ft
 {
@@ -23,8 +25,8 @@ namespace ft
 
 		typedef ft::VectorIterator<T>					iterator;
 		typedef ft::VectorIterator<const T>				const_iterator;
-		//typedef ft::reverse_iterator<iterator>			reverse_iterator;
-		//typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		
 
 		private:
@@ -37,6 +39,9 @@ namespace ft
 		explicit vector (const allocator_type& alloc = allocator_type());
 		explicit vector (size_type n, const value_type& val = value_type(),
                  const allocator_type& alloc = allocator_type());
+		template <class InputIterator>
+    	vector(InputIterator first, InputIterator last, const  allocator_type& alloc =  allocator_type(),
+		   typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type* = 0);
 		vector (const vector& x);
 		vector& operator=(const vector& other);
 		~vector();
@@ -67,22 +72,33 @@ namespace ft
 		void swap (vector& x);
 
 		//Iterators
-		iterator	begin();
-		iterator	end();
-		const_iterator 				begin() const;
-		const_iterator				end() const;
+		iterator				begin();
+		iterator				end();
+		const_iterator 			begin() const;
+		const_iterator			end() const;
+		reverse_iterator		rbegin();
+		const_reverse_iterator	rbegin() const;
+		reverse_iterator		rend();
+		const_reverse_iterator	rend() const;
+
 		iterator erase (iterator position);
 		iterator erase (iterator first, iterator last);
+
+
 		//enable_if
+  		template <class InputIterator>
+		void	assign(InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr);
 		template <class InputIterator>
-  		void assign (InputIterator first, InputIterator last);
-		template <class InputIterator>
-    	void insert (iterator position, InputIterator first, InputIterator last);
+    	void insert(iterator position, InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type* = nullptr);
 
 		//other
 		iterator insert (iterator position, const value_type& val);
 		void insert (iterator position, size_type n, const value_type& val);
 		allocator_type get_allocator() const;
+
+		//добавить T* data()
 
 	};
 

@@ -1,4 +1,4 @@
-#include "Vector.hpp"
+#include "vector.hpp"
 
 namespace ft {
 	template <class T, class Allocator>
@@ -36,17 +36,47 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
+	template <class InputIterator>
+    vector<T, Allocator>::vector(InputIterator first, InputIterator last, const  allocator_type& alloc,
+		   typename ft::enable_if<!ft::is_integral<InputIterator>::value, void>::type*)
+		: _arr(nullptr), _size(0), _capacity(0), _allocator(alloc) {
+		size_type size = last - first;
+		_capacity = size;
+		_arr = _allocator.allocate(_capacity);
+
+		insert(_arr, first, last);
+	}
+
+	template <class T, class Allocator>
 	vector<T,  Allocator>& vector<T,  Allocator>::operator=(const vector& other)
 	{
-		// добавить обработку кейса если не удалось скопировать 
+		if (this == &other)
+			return *this;
+		T* newarr = _allocator.allocate(other._capacity);
+		try{
+			std::uninitialized_copy(other._arr, other._arr + other._size, newarr);
+		} catch(...){
+			_allocator.deallocate(newarr, other._capacity);
+			throw;
+		}
+		// for (size_type i = 0; i < _size; i++)
+		// 	newarr[i] = _allocator.construct(newarr + i, _arr[i]);
+		for (size_type i = 0; i < _size; i++)
+			_allocator.destroy(_arr + i);
+		_allocator.deallocate(_arr, _capacity);
+		_arr = newarr;
+		_capacity = other._capacity;
+		_size = other._size;
+		_allocator = other._allocator;
+		return *this;
 	}
 
 	template <class T, class Allocator>
 	void vector<T,  Allocator>::reserve (size_type n)
 	{
-		if (n < _capacity) return;
+		if (n < _capacity) 
+			return ;
 		T* newarr = _allocator.allocate(n);
-		//Имеет смысл добавить эту обработку в перегрузку оператора присваивания
 		try{
 			std::uninitialized_copy(_arr, _arr + _size, newarr);
 		} catch(...){
@@ -65,12 +95,11 @@ namespace ft {
 	template <class T, class Allocator>
 	void vector<T,  Allocator>::resize (size_type n, value_type val)
 	{
-		if (n > _capacity) reserve(n);
-		for (size_t i = _size; i < n; i++)
-			 _allocator.construct(_arr + i, val);
-		// А почему только если n < size?
+
 		if (n < _size)
-			_size = n;
+			erase(_arr + n, this->end());
+		else
+			insert(this->end(), n - _size, val);
 	}
 
 	template <class T, class Allocator>
@@ -148,11 +177,10 @@ namespace ft {
 	template <class T, class Allocator>
 	void vector<T,  Allocator>::push_back (const value_type& val)
 	{
+		
 		if (_size + 1 > _capacity)
-			reserve(_size * 2);
-		//std::cout << val << std::endl;
+			_size > 0 ? reserve(_size * 2) : reserve(1);
 		_allocator.construct((this->_arr + this->_size), val);
-		//std::cout << this->_arr[val] << std::endl;
 		_size++;
 	}
 
@@ -177,8 +205,33 @@ namespace ft {
 			_capacity = n;
 		}
 		for (size_type i = 0; i < n; i++)
-			_arr[i] = _allocator.construct(_arr + i, val);
+			_allocator.construct(_arr + i, val);
 		_size = n;
+	}
+
+	template <class T, class Allocator>
+	template <class InputIterator>
+	void vector<T, Allocator>::assign(InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*) {
+		size_type newSize = 0;
+		InputIterator position = first;
+		while (position != last) {
+			newSize++;
+			position++;
+		}
+
+		this->~vector();
+		_size = newSize;
+
+		if (newSize > _capacity)
+			_capacity = newSize;
+
+		_arr = _allocator.allocate(_capacity);
+		for (size_type i = 0; i < newSize; i++) {
+			_allocator.construct(_arr + i, *first);
+			first++;
+		}
+
 	}
 
 	template <class T, class Allocator>
@@ -231,6 +284,26 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
+	typename vector<T, Allocator>::reverse_iterator	vector<T, Allocator>::rbegin() {
+		return reverse_iterator(this->end());
+	}
+
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::const_reverse_iterator	vector<T, Allocator>::rbegin() const {
+		return const_reverse_iterator(this->end());
+	}
+
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::reverse_iterator	vector<T, Allocator>::rend() {
+		return reverse_iterator(this->begin());
+	}
+
+	template <class T, class Allocator>
+	typename vector<T, Allocator>::const_reverse_iterator	vector<T, Allocator>::rend() const {
+		return const_reverse_iterator(this->begin());
+	}
+
+	template <class T, class Allocator>
 	typename vector<T, Allocator>::iterator vector<T, Allocator>::erase (iterator position){
 		iterator tmp = position;
 
@@ -276,7 +349,7 @@ namespace ft {
 			!this->_capacity ? this->reserve(1) : this->reserve(this->_capacity * 2);
 			position = this->_arr + this->_size - offset;
 		}
-		std::cout << this->_capacity << std::endl;
+		//std::cout << this->_capacity << std::endl;
 		for (iterator it = this->end(); it != position; it--)
 		{
 			this->_allocator.construct(((&(*(it)))), *(it - 1));
@@ -293,6 +366,17 @@ namespace ft {
 		while (n--)
 			position = this->insert(position, val);
 	}
+
+	template <class T, class Allocator>
+	template <class InputIterator>
+    void vector<T, Allocator>::insert(iterator position, InputIterator first, InputIterator last,
+				typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type*) {
+		while (first != last) {
+			position = insert(position, *first) + 1;
+			first++;
+		}
+	}
+
 
 	template <class T, class Allocator>
 	typename vector<T, Allocator>::allocator_type vector<T, Allocator>::get_allocator() const{
@@ -326,7 +410,7 @@ namespace ft {
 			if (lhs[i] != rhs[i])
 			{
 				return lhs[i] < rhs[i] ? true : false;
-				std::cout << "check";
+				//std::cout << "check";
 			}
 		}
 		return (lhs.size() >= rhs.size()) ? false : true;
