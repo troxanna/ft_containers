@@ -1,13 +1,13 @@
 #pragma once
 
 #include <iostream>
-#include "../Vector/Vector.hpp"
+#include "../Vector/vector.hpp"
 # include <memory>
 
 
 namespace ft
 {
-	template <class T, class Container = std::vector<T> > class stack
+	template <class T, class Container = ft::vector<T> > class stack
 	{
 		public:		
 		typedef T	value_type;

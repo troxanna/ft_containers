@@ -1,7 +1,7 @@
 #include <iostream>         
 
 #include <vector>   
-#include "../Vector.hpp"  
+#include "../vector.hpp"  
 
 int main(){
 	std::vector<int> foo (3,0);

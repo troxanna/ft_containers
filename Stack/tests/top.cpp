@@ -1,7 +1,7 @@
 #include <iostream>         
 
 #include <vector>   
-#include "../../Vector/Vector.hpp"    
+#include "../../Vector/vector.hpp"    
 #include <stack>   
 #include "../Stack.hpp"   
 

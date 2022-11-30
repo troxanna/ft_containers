@@ -3,7 +3,7 @@
 namespace ft {
 	template <class T, class Allocator>
 	vector<T,  Allocator>::vector (const allocator_type& alloc) :
-					_arr(nullptr), _allocator(alloc), _size(0), _capacity(0)
+					_arr(nullptr), _allocator(alloc), _capacity(0), _size(0)
 	{};
 
 	template <class T, class Allocator>
@@ -18,7 +18,7 @@ namespace ft {
 	}
 
 	template <class T, class Allocator>
-	vector<T,  Allocator>::vector (const vector& other) : _arr(nullptr), _allocator(other._allocator), _size(other._size), _capacity(other._capacity)
+	vector<T,  Allocator>::vector (const vector& other) : _arr(nullptr), _allocator(other._allocator), _capacity(other._capacity), _size(other._size)
 	{
 		_arr = _allocator.allocate(_capacity);
 		for (size_type i = 0; i < _size; i++)
@@ -312,7 +312,7 @@ namespace ft {
 			this->_allocator.destroy(&(*position));
 		else{
 			this->_allocator.destroy(&(*position));
-			for (size_t i = 0; i < --iterator(this->end()) - position; i++)
+			for (long i = 0; i < --iterator(this->end()) - position; i++)
 			{
 				//iterator(this->_arr + (this->_size - 1))
 				//std::cout << this->_arr[i];
